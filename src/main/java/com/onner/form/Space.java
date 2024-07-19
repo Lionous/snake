@@ -4,6 +4,8 @@
  */
 package com.onner.form;
 
+import com.onner.async.FoodProcess;
+
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import javax.swing.JFrame;
@@ -29,6 +31,14 @@ public class Space extends javax.swing.JFrame {
 
         this.windowsnake.setLayout(null);
         
+        new Thread(
+                new FoodProcess(
+                        this.space,
+                        this.food,
+                        this.time
+                )
+        ).start();
+
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -73,12 +83,13 @@ public class Space extends javax.swing.JFrame {
         icon = new javax.swing.JLabel();
         icon1 = new javax.swing.JLabel();
         space = new javax.swing.JPanel();
+        food = new javax.swing.JLabel();
+        time = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("snake");
         setBackground(new java.awt.Color(51, 153, 0));
         setName("space"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(1000, 600));
 
         windowsnake.setBackground(new java.awt.Color(49, 64, 23));
         windowsnake.setPreferredSize(new java.awt.Dimension(1000, 600));
@@ -115,9 +126,9 @@ public class Space extends javax.swing.JFrame {
         level.setForeground(new java.awt.Color(204, 204, 204));
         level.setText("0");
 
-        icon.setIcon(new javax.swing.ImageIcon("/home/lionos/Downloads/snake/src/main/java/com/onner/resources/snake50x50.png")); // NOI18N
+        icon.setIcon(new javax.swing.ImageIcon("/run/media/lionos/Lion/2024-I/Parallel-Programming/Projects/snake/src/main/java/com/onner/resources/snake50x50.png")); // NOI18N
 
-        icon1.setIcon(new javax.swing.ImageIcon("/home/lionos/Downloads/snake/src/main/java/com/onner/resources/snake50x50.png")); // NOI18N
+        icon1.setIcon(new javax.swing.ImageIcon("/run/media/lionos/Lion/2024-I/Parallel-Programming/Projects/snake/src/main/java/com/onner/resources/snake50x50.png")); // NOI18N
 
         javax.swing.GroupLayout boardLayout = new javax.swing.GroupLayout(board);
         board.setLayout(boardLayout);
@@ -159,23 +170,37 @@ public class Space extends javax.swing.JFrame {
         space.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 131, 5), 3));
         space.setPreferredSize(new java.awt.Dimension(900, 500));
 
+        food.setIcon(new javax.swing.ImageIcon("/run/media/lionos/Lion/2024-I/Parallel-Programming/Projects/snake/src/main/java/com/onner/resources/food50x44.png")); // NOI18N
+
         javax.swing.GroupLayout spaceLayout = new javax.swing.GroupLayout(space);
         space.setLayout(spaceLayout);
         spaceLayout.setHorizontalGroup(
             spaceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(spaceLayout.createSequentialGroup()
+                .addGap(409, 409, 409)
+                .addComponent(food)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         spaceLayout.setVerticalGroup(
             spaceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 494, Short.MAX_VALUE)
+            .addGroup(spaceLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(food)
+                .addContainerGap(419, Short.MAX_VALUE))
         );
+
+        time.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
+        time.setForeground(new java.awt.Color(204, 204, 204));
+        time.setText("0");
 
         javax.swing.GroupLayout windowsnakeLayout = new javax.swing.GroupLayout(windowsnake);
         windowsnake.setLayout(windowsnakeLayout);
         windowsnakeLayout.setHorizontalGroup(
             windowsnakeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(windowsnakeLayout.createSequentialGroup()
-                .addGap(50, 50, 50)
+                .addGap(30, 30, 30)
+                .addComponent(time)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(windowsnakeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(board, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(space, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -187,7 +212,10 @@ public class Space extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addComponent(board, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(space, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(windowsnakeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(space, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(time))
+                .addGap(45, 45, 45))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -241,6 +269,7 @@ public class Space extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel board;
+    private javax.swing.JLabel food;
     private javax.swing.JLabel icon;
     private javax.swing.JLabel icon1;
     private javax.swing.JLabel jlabel_level;
@@ -250,6 +279,7 @@ public class Space extends javax.swing.JFrame {
     private javax.swing.JLabel losses;
     private javax.swing.JLabel score;
     private javax.swing.JPanel space;
+    private javax.swing.JLabel time;
     private javax.swing.JPanel windowsnake;
     // End of variables declaration//GEN-END:variables
 }
