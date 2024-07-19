@@ -5,7 +5,9 @@
 package com.onner.form;
 
 import com.onner.async.FoodProcess;
+import com.onner.global.GlobalVariables;
 
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import javax.swing.JFrame;
@@ -27,17 +29,11 @@ public class Space extends javax.swing.JFrame {
     private void initGeneral() {
         this.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setResizable(false);
-
+        this.setLayout(null);
+        //this.setResizable(false);
         this.windowsnake.setLayout(null);
-        
-        new Thread(
-                new FoodProcess(
-                        this.space,
-                        this.food,
-                        this.time
-                )
-        ).start();
+        this.board.setLayout(null);
+        this.space.setLayout(null);
 
         this.addComponentListener(new ComponentAdapter() {
             @Override
@@ -45,6 +41,14 @@ public class Space extends javax.swing.JFrame {
                 adjustSpacePanelSize();
             }
         });
+
+        new Thread(
+                new FoodProcess(
+                        this.space,
+                        this.food,
+                        this.time
+                )
+        ).start();
     }
     
     private void adjustSpacePanelSize() {
@@ -61,6 +65,10 @@ public class Space extends javax.swing.JFrame {
 
         jlabel_score.setLocation( xPositionLabel , WIDTH + 15);
         score.setLocation( xPositionScore , WIDTH + 15);
+
+        icon1.setLocation(board.getWidth() - 50, WIDTH );
+        jlabel_losses.setLocation(board.getWidth() - 200,WIDTH + 15);
+        losses.setLocation(board.getWidth() - 100,WIDTH + 15);
     }
         
     /**
@@ -85,6 +93,7 @@ public class Space extends javax.swing.JFrame {
         space = new javax.swing.JPanel();
         food = new javax.swing.JLabel();
         time = new javax.swing.JLabel();
+        jToggleButtonStop = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("snake");
@@ -177,29 +186,39 @@ public class Space extends javax.swing.JFrame {
         spaceLayout.setHorizontalGroup(
             spaceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(spaceLayout.createSequentialGroup()
-                .addGap(409, 409, 409)
+                .addGap(415, 415, 415)
                 .addComponent(food)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         spaceLayout.setVerticalGroup(
             spaceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(spaceLayout.createSequentialGroup()
-                .addGap(31, 31, 31)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, spaceLayout.createSequentialGroup()
+                .addContainerGap(228, Short.MAX_VALUE)
                 .addComponent(food)
-                .addContainerGap(419, Short.MAX_VALUE))
+                .addGap(222, 222, 222))
         );
 
         time.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         time.setForeground(new java.awt.Color(204, 204, 204));
         time.setText("0");
 
+        jToggleButtonStop.setText("->");
+        jToggleButtonStop.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jToggleButtonStopMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout windowsnakeLayout = new javax.swing.GroupLayout(windowsnake);
         windowsnake.setLayout(windowsnakeLayout);
         windowsnakeLayout.setHorizontalGroup(
             windowsnakeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(windowsnakeLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(time)
+                .addGroup(windowsnakeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(windowsnakeLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(time))
+                    .addComponent(jToggleButtonStop))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(windowsnakeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(board, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -209,13 +228,17 @@ public class Space extends javax.swing.JFrame {
         windowsnakeLayout.setVerticalGroup(
             windowsnakeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(windowsnakeLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(board, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addGroup(windowsnakeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(windowsnakeLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(board, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(windowsnakeLayout.createSequentialGroup()
+                        .addComponent(jToggleButtonStop)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(windowsnakeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(space, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(time))
-                .addGap(45, 45, 45))
+                .addGap(40, 40, 40))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -231,6 +254,11 @@ public class Space extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jToggleButtonStopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButtonStopMouseClicked
+        // TODO add your handling code here:
+        GlobalVariables.collision = true;
+    }//GEN-LAST:event_jToggleButtonStopMouseClicked
 
     /**
      * @param args the command line arguments
@@ -272,6 +300,7 @@ public class Space extends javax.swing.JFrame {
     private javax.swing.JLabel food;
     private javax.swing.JLabel icon;
     private javax.swing.JLabel icon1;
+    private javax.swing.JToggleButton jToggleButtonStop;
     private javax.swing.JLabel jlabel_level;
     private javax.swing.JLabel jlabel_losses;
     private javax.swing.JLabel jlabel_score;
