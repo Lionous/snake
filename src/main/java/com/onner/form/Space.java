@@ -50,15 +50,11 @@ public class Space extends javax.swing.JFrame {
                         this.time
                 )
         ).start();
-        /*
         new Thread(
                 new SnakeProcess(
-                        this.space,
-                        this.space.getWidth(),
-                        this.space.getHeight()
+                        this.space
                 )
         ).start();
-        */
     }
     
     private void adjustSpacePanelSize() {
@@ -183,6 +179,11 @@ public class Space extends javax.swing.JFrame {
         space.setBackground(new java.awt.Color(255, 200, 55));
         space.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 131, 5), 3));
         space.setPreferredSize(new java.awt.Dimension(900, 500));
+        space.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                spaceMouseMoved(evt);
+            }
+        });
 
         food.setIcon(new javax.swing.ImageIcon("/run/media/lionos/Lion/2024-I/Parallel-Programming/unit-ii/Project/snake/src/main/java/com/onner/resources/apple.gif")); // NOI18N
 
@@ -262,6 +263,12 @@ public class Space extends javax.swing.JFrame {
         // TODO add your handling code here:
         GlobalVariables.collision = true;
     }//GEN-LAST:event_jToggleButtonStopMouseClicked
+
+    private void spaceMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_spaceMouseMoved
+        // TODO add your handling code here:
+        GlobalVariables.mousePositionX = evt.getX();
+        GlobalVariables.mousePositionY = evt.getY();
+    }//GEN-LAST:event_spaceMouseMoved
 
     /**
      * @param args the command line arguments
