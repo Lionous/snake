@@ -76,10 +76,7 @@
                           <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                           <Component id="board" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jToggleButtonStop" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="jToggleButtonStop" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="space" min="-2" max="-2" attributes="0"/>
@@ -227,14 +224,14 @@
             <Component class="javax.swing.JLabel" name="icon">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="/run/media/lionos/Lion/2024-I/Parallel-Programming/Projects/snake/src/main/java/com/onner/resources/snake50x50.png"/>
+                  <Image iconType="2" name="/run/media/lionos/Lion/2024-I/Parallel-Programming/unit-ii/Project/snake/src/main/java/com/onner/resources/snake_logo50x50.png"/>
                 </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="icon1">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="/run/media/lionos/Lion/2024-I/Parallel-Programming/Projects/snake/src/main/java/com/onner/resources/snake50x50.png"/>
+                  <Image iconType="2" name="/run/media/lionos/Lion/2024-I/Parallel-Programming/unit-ii/Project/snake/src/main/java/com/onner/resources/snake_logo50x50.png"/>
                 </Property>
               </Properties>
             </Component>
@@ -270,7 +267,7 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="228" max="32767" attributes="0"/>
+                      <EmptySpace pref="232" max="32767" attributes="0"/>
                       <Component id="food" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="222" max="-2" attributes="0"/>
                   </Group>
@@ -281,7 +278,7 @@
             <Component class="javax.swing.JLabel" name="food">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="/run/media/lionos/Lion/2024-I/Parallel-Programming/Projects/snake/src/main/java/com/onner/resources/food50x44.png"/>
+                  <Image iconType="2" name="/run/media/lionos/Lion/2024-I/Parallel-Programming/unit-ii/Project/snake/src/main/java/com/onner/resources/apple.gif"/>
                 </Property>
               </Properties>
             </Component>

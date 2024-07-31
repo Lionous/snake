@@ -10,12 +10,11 @@ import java.util.logging.Logger;
 
 public class FoodProcess implements Runnable {
 
-    private int speed = 1;
     private int secondsQuantity = 3;
-    private int positionInitialX = 10;
-    private int positionInitialY = 10;
-    private int randomPositionX = 0;
-    private int randomPositionY = 0;
+    private int positionInitialX;
+    private int positionInitialY;
+    private int randomPositionX;
+    private int randomPositionY;
     private int width = 50, height = 44;
 
     private Random random = null;
@@ -45,7 +44,7 @@ public class FoodProcess implements Runnable {
                     GlobalVariables.collision = false;
                     randomFoodPosition();
                 }
-                Thread.sleep(100);
+                Thread.sleep(1000);
             }
         } catch (InterruptedException ex) {
             Logger.getLogger(FoodProcess.class.getName()).log(Level.SEVERE, null, ex);
@@ -75,11 +74,8 @@ public class FoodProcess implements Runnable {
     }
 
     private void initialPositionOfFood() {
-        int margin = 50;
-        int maxX = this.playSpace.getWidth() - this.food.getWidth() - margin;
-        int maxY = this.playSpace.getHeight() - this.food.getHeight() - margin;
-        this.positionInitialX = margin + random.nextInt(maxX - margin );
-        this.positionInitialY = margin + random.nextInt(maxY - margin );
-        food.setLocation(this.positionInitialX, this.positionInitialY);
+        positionInitialX = (this.playSpace.getBounds().width - this.food.getBounds().width);
+        positionInitialY = (this.playSpace.getBounds().height - this.food.getBounds().width) ;
+        food.setLocation(positionInitialX, positionInitialY);
     }
 }

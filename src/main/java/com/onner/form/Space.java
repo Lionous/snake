@@ -5,6 +5,7 @@
 package com.onner.form;
 
 import com.onner.async.FoodProcess;
+import com.onner.async.SnakeProcess;
 import com.onner.global.GlobalVariables;
 
 import java.awt.*;
@@ -49,23 +50,27 @@ public class Space extends javax.swing.JFrame {
                         this.time
                 )
         ).start();
+        /*
+        new Thread(
+                new SnakeProcess(
+                        this.space,
+                        this.space.getWidth(),
+                        this.space.getHeight()
+                )
+        ).start();
+        */
     }
     
     private void adjustSpacePanelSize() {
         windowsnake.setSize(getWidth(), getHeight());
-         
         space.setSize(windowsnake.getWidth() - 100, windowsnake.getHeight() - 150);
         space.setLocation(50, 50);
-        
         board.setSize(windowsnake.getWidth() - 100, 50);
         board.setLocation(50, 0);
-        
-        int xPositionLabel = (board.getWidth() / 2) - 50;        
+        int xPositionLabel = (board.getWidth() / 2) - 50;
         int xPositionScore = (board.getWidth() / 2) + 50;
-
         jlabel_score.setLocation( xPositionLabel , WIDTH + 15);
         score.setLocation( xPositionScore , WIDTH + 15);
-
         icon1.setLocation(board.getWidth() - 50, WIDTH );
         jlabel_losses.setLocation(board.getWidth() - 200,WIDTH + 15);
         losses.setLocation(board.getWidth() - 100,WIDTH + 15);
@@ -135,9 +140,9 @@ public class Space extends javax.swing.JFrame {
         level.setForeground(new java.awt.Color(204, 204, 204));
         level.setText("0");
 
-        icon.setIcon(new javax.swing.ImageIcon("/run/media/lionos/Lion/2024-I/Parallel-Programming/Projects/snake/src/main/java/com/onner/resources/snake50x50.png")); // NOI18N
+        icon.setIcon(new javax.swing.ImageIcon("/run/media/lionos/Lion/2024-I/Parallel-Programming/unit-ii/Project/snake/src/main/java/com/onner/resources/snake_logo50x50.png")); // NOI18N
 
-        icon1.setIcon(new javax.swing.ImageIcon("/run/media/lionos/Lion/2024-I/Parallel-Programming/Projects/snake/src/main/java/com/onner/resources/snake50x50.png")); // NOI18N
+        icon1.setIcon(new javax.swing.ImageIcon("/run/media/lionos/Lion/2024-I/Parallel-Programming/unit-ii/Project/snake/src/main/java/com/onner/resources/snake_logo50x50.png")); // NOI18N
 
         javax.swing.GroupLayout boardLayout = new javax.swing.GroupLayout(board);
         board.setLayout(boardLayout);
@@ -179,7 +184,7 @@ public class Space extends javax.swing.JFrame {
         space.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 131, 5), 3));
         space.setPreferredSize(new java.awt.Dimension(900, 500));
 
-        food.setIcon(new javax.swing.ImageIcon("/run/media/lionos/Lion/2024-I/Parallel-Programming/Projects/snake/src/main/java/com/onner/resources/food50x44.png")); // NOI18N
+        food.setIcon(new javax.swing.ImageIcon("/run/media/lionos/Lion/2024-I/Parallel-Programming/unit-ii/Project/snake/src/main/java/com/onner/resources/apple.gif")); // NOI18N
 
         javax.swing.GroupLayout spaceLayout = new javax.swing.GroupLayout(space);
         space.setLayout(spaceLayout);
@@ -193,7 +198,7 @@ public class Space extends javax.swing.JFrame {
         spaceLayout.setVerticalGroup(
             spaceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, spaceLayout.createSequentialGroup()
-                .addContainerGap(228, Short.MAX_VALUE)
+                .addContainerGap(232, Short.MAX_VALUE)
                 .addComponent(food)
                 .addGap(222, 222, 222))
         );
@@ -232,9 +237,7 @@ public class Space extends javax.swing.JFrame {
                     .addGroup(windowsnakeLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(board, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(windowsnakeLayout.createSequentialGroup()
-                        .addComponent(jToggleButtonStop)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                    .addComponent(jToggleButtonStop))
                 .addGroup(windowsnakeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(space, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(time))
