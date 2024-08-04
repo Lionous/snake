@@ -1,19 +1,17 @@
 package com.onner.async;
 
-import com.onner.component.CircularPanel;
+import com.onner.component.RoundedPanel;
 import com.onner.global.GlobalVariables;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static java.lang.Thread.sleep;
 
 public class SnakeProcess implements Runnable {
-    private CircularPanel snake = null;
+    private RoundedPanel snake = null;
     private JPanel spacegame = null;
     private int positionInitialX = 500;
     private int positionInitialY = 500;
@@ -26,7 +24,7 @@ public class SnakeProcess implements Runnable {
     }
 
     private void initSnake() {
-        this.snake = new CircularPanel();
+        this.snake = new RoundedPanel();
         this.snake.setLayout(null);
         this.snake.setBackground(Color.DARK_GRAY);
         this.snake.setBounds(positionInitialX,positionInitialY,widthSnake,heightSnake);
