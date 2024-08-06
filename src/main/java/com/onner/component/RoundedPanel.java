@@ -5,8 +5,8 @@ import java.awt.*;
 
 public class RoundedPanel extends JPanel {
 
-    private int cornerRadius = 25; // Radio de las esquinas redondeadas
-    private int borderWidth = 2; // Ancho del borde
+    private int cornerRadius = 10; // Radio de las esquinas redondeadas
+    private int borderWidth = 1; // Ancho del borde
 
     public RoundedPanel() {
         this.setOpaque(false);

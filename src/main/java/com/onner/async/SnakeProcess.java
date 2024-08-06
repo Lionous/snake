@@ -4,6 +4,7 @@ import com.onner.component.RoundedPanel;
 import com.onner.form.Space;
 import com.onner.global.GlobalVariables;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -21,57 +22,64 @@ public class SnakeProcess implements Runnable {
 
     private JLabel food = null;
     private List<RoundedPanel> snakeBody;
+    private List<Point> routes;
     private int lastDirectionX = 0;
     private int lastDirectionY = 0;
 
     public SnakeProcess(JPanel spacegame, JLabel food) {
         this.spacegame = spacegame;
         this.food = food;
-        initSnake();
         this.snakeBody = new ArrayList<>();
+        this.routes = new ArrayList<>();
+        initSnake();
     }
 
     private void initSnake() {
         this.snake = new RoundedPanel();
         this.snake.setLayout(null);
         this.snake.setBackground(Color.DARK_GRAY);
-        this.snake.setBounds(positionInitialX,positionInitialY,widthSnake,heightSnake);
+        this.snake.setBounds(positionInitialX, positionInitialY, widthSnake, heightSnake);
         spacegame.add(snake);
+        routes.add(new Point(positionInitialX, positionInitialY));
     }
 
     @Override
     public void run() {
-        int motionPixel = 1;
-        int velocity = (int)(125/GlobalVariables.speedSnake);
-        int cursorToCenterX = widthSnake/2, cursorToCenterY = heightSnake/2;
+        int motionPixel = 40;
+        int velocity = (int) (500 / GlobalVariables.speedSnake);
+        int cursorToCenterX = widthSnake / 2, cursorToCenterY = heightSnake / 2;
         try {
-            for(;;) {
-                if(this.snake.getBounds().x < GlobalVariables.mousePositionX - cursorToCenterX) {
-                    this.snake.setBounds(this.snake.getBounds().x + motionPixel, this.snake.getBounds().y,widthSnake, heightSnake);
+            for (;;) {
+                int newHeadX = this.snake.getBounds().x;
+                int newHeadY = this.snake.getBounds().y;
+
+                if (this.snake.getBounds().x < GlobalVariables.mousePositionX - cursorToCenterX) {
+                    this.snake.setBounds(this.snake.getBounds().x + motionPixel, this.snake.getBounds().y, widthSnake, heightSnake);
                     lastDirectionX = 1;
                     lastDirectionY = 0;
                 }
-                if(this.snake.getBounds().x > GlobalVariables.mousePositionX - cursorToCenterX) {
-                    this.snake.setBounds(this.snake.getBounds().x - motionPixel, this.snake.getBounds().y,widthSnake, heightSnake);
+                if (this.snake.getBounds().x > GlobalVariables.mousePositionX - cursorToCenterX) {
+                    this.snake.setBounds(this.snake.getBounds().x - motionPixel, this.snake.getBounds().y, widthSnake, heightSnake);
                     lastDirectionX = -1;
                     lastDirectionY = 0;
                 }
-                if(this.snake.getBounds().y < GlobalVariables.mousePositionY - cursorToCenterY) {
-                    this.snake.setBounds(this.snake.getBounds().x, this.snake.getBounds().y + motionPixel,widthSnake, heightSnake);
+                if (this.snake.getBounds().y < GlobalVariables.mousePositionY - cursorToCenterY) {
+                    this.snake.setBounds(this.snake.getBounds().x, this.snake.getBounds().y + motionPixel, widthSnake, heightSnake);
                     lastDirectionX = 0;
                     lastDirectionY = 1;
                 }
-                if(this.snake.getBounds().y > GlobalVariables.mousePositionY - cursorToCenterY) {
-                    this.snake.setBounds(this.snake.getBounds().x, this.snake.getBounds().y - motionPixel,widthSnake, heightSnake);
+                if (this.snake.getBounds().y > GlobalVariables.mousePositionY - cursorToCenterY) {
+                    this.snake.setBounds(this.snake.getBounds().x, this.snake.getBounds().y - motionPixel, widthSnake, heightSnake);
                     lastDirectionX = 0;
                     lastDirectionY = -1;
                 }
 
-                int oldX = this.snake.getBounds().x;
-                int oldY = this.snake.getBounds().y;
-                obtainingNewPoints(oldX,oldY);
+                if (Math.abs(newHeadX - routes.get(routes.size() - 1).x) >= widthSnake || Math.abs(newHeadY - routes.get(routes.size() - 1).y) >= heightSnake) {
+                    routes.add(new Point(newHeadX, newHeadY));
+                }
+                updateSnakeBody();
                 if (checkCollisionWithFood(food)) {
-                    newRoudedPanel();
+                    newRoundedPanel();
                 }
                 Thread.sleep(velocity);
             }
@@ -84,28 +92,7 @@ public class SnakeProcess implements Runnable {
         if (!GlobalVariables.collision) {
             Rectangle snakeBounds = this.snake.getBounds();
             Rectangle foodBounds = food.getBounds();
-            boolean collision = false;
-            if (lastDirectionX < 0 && snakeBounds.x == foodBounds.x + foodBounds.width &&
-                    snakeBounds.y + snakeBounds.height > foodBounds.y &&
-                    snakeBounds.y < foodBounds.y + foodBounds.height) {
-                collision = true;
-            }
-            else if (lastDirectionX > 0 && snakeBounds.x + snakeBounds.width == foodBounds.x &&
-                    snakeBounds.y + snakeBounds.height > foodBounds.y &&
-                    snakeBounds.y < foodBounds.y + foodBounds.height) {
-                collision = true;
-            }
-            else if (lastDirectionY < 0 && snakeBounds.y == foodBounds.y + foodBounds.height &&
-                    snakeBounds.x + snakeBounds.width > foodBounds.x &&
-                    snakeBounds.x < foodBounds.x + foodBounds.width) {
-                collision = true;
-            }
-            else if (lastDirectionY > 0 && snakeBounds.y + snakeBounds.height == foodBounds.y &&
-                    snakeBounds.x + snakeBounds.width > foodBounds.x &&
-                    snakeBounds.x < foodBounds.x + foodBounds.width) {
-                collision = true;
-            }
-            if (collision) {
+            if (snakeBounds.intersects(foodBounds)) {
                 GlobalVariables.collision = true;
                 return true;
             }
@@ -113,65 +100,28 @@ public class SnakeProcess implements Runnable {
         return false;
     }
 
-
-    private void newRoudedPanel() {
-        int headPositionX;
-        int headPositionY;
-        if (snakeBody.isEmpty()) {
-            headPositionX = this.snake.getBounds().x;
-            headPositionY = this.snake.getBounds().y;
-        } else {
-            RoundedPanel lastElement = snakeBody.get(snakeBody.size() - 1);
-            headPositionX = lastElement.getBounds().x;
-            headPositionY = lastElement.getBounds().y;
-        }
-        if (lastDirectionX > 0) { // Moving right
-            headPositionX -= widthSnake;
-        } else if (lastDirectionX < 0) { // Moving left
-            headPositionX += widthSnake;
-        } else if (lastDirectionY > 0) { // Moving down
-            headPositionY -= heightSnake;
-        } else if (lastDirectionY < 0) { // Moving up
-            headPositionY += heightSnake;
-        }
-
+    private void newRoundedPanel() {
         RoundedPanel newSegment = new RoundedPanel();
         newSegment.setLayout(null);
         newSegment.setBackground(Color.GRAY);
-        newSegment.setBounds(headPositionX, headPositionY, widthSnake, heightSnake);
+        newSegment.setSize(widthSnake, heightSnake);
         snakeBody.add(newSegment);
         spacegame.add(newSegment);
-        Space.score.setText(snakeBody.size()+"");
-        System.out.println("collision:"+GlobalVariables.collision);
+        Space.score.setText(snakeBody.size() - 1+ "");
+        System.out.println("collision:" + GlobalVariables.collision);
     }
 
-    private int lastAssignedX = Integer.MIN_VALUE;
-    private int lastAssignedY = Integer.MIN_VALUE;
-    private final int step = 40; // The interval to consider
-
-    private void obtainingNewPoints(int positionInitialX, int positionInitialY) {
-        if (Math.abs(positionInitialX - lastAssignedX) >= step ||
-                Math.abs(positionInitialY - lastAssignedY) >= step) {
-            lastAssignedX = positionInitialX;
-            lastAssignedY = positionInitialY;
-            updateSnakeBody(lastAssignedX, lastAssignedY);
-            System.out.println("New (x, y) position: (" + lastAssignedX + ", " + lastAssignedY + ")");
+    private void updateSnakeBody() {
+        if (snakeBody.isEmpty()) return;
+        while (routes.size() < snakeBody.size() + 1) {
+            routes.add(new Point(routes.get(routes.size() - 1).x, routes.get(routes.size() - 1).y));
         }
-    }
+        int routesIndex = routes.size() - 1;
 
-    private void updateSnakeBody(int newHeadX, int newHeadY) {
-
-        if (snakeBody.isEmpty()) {
-            return;
-        }
-
-        RoundedPanel headSegment = snakeBody.get(0);
-        headSegment.setBounds(newHeadX, newHeadY, headSegment.getWidth(), headSegment.getHeight());
-
-        for (int i = snakeBody.size() - 1; i > 0; i--) {
-            RoundedPanel currentSegment = snakeBody.get(i);
-            RoundedPanel prevSegment = snakeBody.get(i - 1);
-            currentSegment.setBounds(prevSegment.getBounds().x, prevSegment.getBounds().y, currentSegment.getWidth(), currentSegment.getHeight());
+        for (int i = snakeBody.size() - 1; i >= 0; i--) {
+            RoundedPanel segment = snakeBody.get(i);
+            Point point = routes.get(routesIndex--);
+            segment.setBounds(point.x, point.y, widthSnake, heightSnake);
         }
     }
 }
