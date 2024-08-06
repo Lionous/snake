@@ -4,82 +4,81 @@ import com.onner.component.RoundedPanel;
 import com.onner.form.Space;
 import com.onner.global.GlobalVariables;
 
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SnakeProcess implements Runnable {
-    private RoundedPanel snake = null;
-    private JPanel spacegame = null;
-    private int positionInitialX = 500;
-    private int positionInitialY = 500;
+    private JPanel spacegame;
     private int widthSnake = 40;
     private int heightSnake = 40;
+    int motionPixel = 40;
 
-    private JLabel food = null;
-    private List<RoundedPanel> snakeBody;
+    private JLabel food;
+    private List<RoundedPanel> snake;
     private List<Point> routes;
-    private int lastDirectionX = 0;
-    private int lastDirectionY = 0;
 
+    public SnakeProcess() {}
     public SnakeProcess(JPanel spacegame, JLabel food) {
         this.spacegame = spacegame;
         this.food = food;
-        this.snakeBody = new ArrayList<>();
+        this.snake = new ArrayList<>();
         this.routes = new ArrayList<>();
         initSnake();
     }
 
     private void initSnake() {
-        this.snake = new RoundedPanel();
-        this.snake.setLayout(null);
-        this.snake.setBackground(Color.DARK_GRAY);
-        this.snake.setBounds(positionInitialX, positionInitialY, widthSnake, heightSnake);
-        spacegame.add(snake);
-        routes.add(new Point(positionInitialX, positionInitialY));
+        RoundedPanel newSegment = new RoundedPanel();
+        newSegment.setLayout(null);
+        newSegment.setBackground(new Color(56, 52, 52, 255));
+        newSegment.setBounds(500, 500, widthSnake, heightSnake);
+        snake.add(newSegment);
+        spacegame.add(newSegment);
+        routes.add(new Point(500, 500));
     }
 
     @Override
     public void run() {
-        int motionPixel = 40;
+        switch (GlobalVariables.sizeSnake) {
+            case "small": {motionPixel = 20; widthSnake= 20; heightSnake = 20;} break;
+            case "medium": {motionPixel = 30; widthSnake= 30; heightSnake = 30;} break;
+            case "big": {motionPixel = 40; widthSnake= 40; heightSnake = 40;} break;
+            case "bright": {motionPixel = 50; widthSnake= 50; heightSnake = 50;} break;
+        }
+
         int velocity = (int) (500 / GlobalVariables.speedSnake);
-        int cursorToCenterX = widthSnake / 2, cursorToCenterY = heightSnake / 2;
+        int cursorToCenterX = widthSnake / 2 - 5, cursorToCenterY = heightSnake / 2 - 5;
+
         try {
-            for (;;) {
-                int newHeadX = this.snake.getBounds().x;
-                int newHeadY = this.snake.getBounds().y;
+            while (true) {
+                RoundedPanel head = snake.getFirst();
+                if (head != null) {
+                    int newHeadX = head.getBounds().x;
+                    int newHeadY = head.getBounds().y;
 
-                if (this.snake.getBounds().x < GlobalVariables.mousePositionX - cursorToCenterX) {
-                    this.snake.setBounds(this.snake.getBounds().x + motionPixel, this.snake.getBounds().y, widthSnake, heightSnake);
-                    lastDirectionX = 1;
-                    lastDirectionY = 0;
-                }
-                if (this.snake.getBounds().x > GlobalVariables.mousePositionX - cursorToCenterX) {
-                    this.snake.setBounds(this.snake.getBounds().x - motionPixel, this.snake.getBounds().y, widthSnake, heightSnake);
-                    lastDirectionX = -1;
-                    lastDirectionY = 0;
-                }
-                if (this.snake.getBounds().y < GlobalVariables.mousePositionY - cursorToCenterY) {
-                    this.snake.setBounds(this.snake.getBounds().x, this.snake.getBounds().y + motionPixel, widthSnake, heightSnake);
-                    lastDirectionX = 0;
-                    lastDirectionY = 1;
-                }
-                if (this.snake.getBounds().y > GlobalVariables.mousePositionY - cursorToCenterY) {
-                    this.snake.setBounds(this.snake.getBounds().x, this.snake.getBounds().y - motionPixel, widthSnake, heightSnake);
-                    lastDirectionX = 0;
-                    lastDirectionY = -1;
-                }
+                    if (newHeadX < GlobalVariables.mousePositionX - cursorToCenterX) {
+                        newHeadX += motionPixel;
+                    }
+                    if (newHeadX > GlobalVariables.mousePositionX - cursorToCenterX) {
+                        newHeadX -= motionPixel;
+                    }
+                    if (newHeadY < GlobalVariables.mousePositionY - cursorToCenterY) {
+                        newHeadY += motionPixel;
+                    }
+                    if (newHeadY > GlobalVariables.mousePositionY - cursorToCenterY) {
+                        newHeadY -= motionPixel;
+                    }
+                    head.setBounds(newHeadX, newHeadY, widthSnake, heightSnake);
 
-                if (Math.abs(newHeadX - routes.get(routes.size() - 1).x) >= widthSnake || Math.abs(newHeadY - routes.get(routes.size() - 1).y) >= heightSnake) {
-                    routes.add(new Point(newHeadX, newHeadY));
-                }
-                updateSnakeBody();
-                if (checkCollisionWithFood(food)) {
-                    newRoundedPanel();
+                    obtainPoints( newHeadX, newHeadY);
+
+                    updateSnakeBody();
+                    if (checkCollisionWithFood(food)) {
+                        newRoundedPanel();
+                    }
                 }
                 Thread.sleep(velocity);
             }
@@ -90,7 +89,7 @@ public class SnakeProcess implements Runnable {
 
     private boolean checkCollisionWithFood(JLabel food) {
         if (!GlobalVariables.collision) {
-            Rectangle snakeBounds = this.snake.getBounds();
+            Rectangle snakeBounds = this.snake.getFirst().getBounds();
             Rectangle foodBounds = food.getBounds();
             if (snakeBounds.intersects(foodBounds)) {
                 GlobalVariables.collision = true;
@@ -105,23 +104,35 @@ public class SnakeProcess implements Runnable {
         newSegment.setLayout(null);
         newSegment.setBackground(Color.GRAY);
         newSegment.setSize(widthSnake, heightSnake);
-        snakeBody.add(newSegment);
+        snake.add(newSegment);
         spacegame.add(newSegment);
-        Space.score.setText(snakeBody.size() - 1+ "");
-        System.out.println("collision:" + GlobalVariables.collision);
+        Space.score.setText(snake.size()-1 + "");
+        System.out.println("Collision with food, snake size: " + snake.size());
+        System.out.println("puntos : " + routes.size());
+    }
+
+    private void obtainPoints(int x, int y) {
+        if (routes.isEmpty()) {
+            routes.add(new Point(x, y));
+        } else {
+            Point firstPoint = routes.getFirst();
+            if (Math.abs(x - firstPoint.x) >= widthSnake || Math.abs(y - firstPoint.y) >= heightSnake) {
+                routes.add(0, new Point(x, y));
+                if (routes.size() > snake.size()) {
+                    routes.remove(routes.size() - 1);
+                }
+            }
+        }
     }
 
     private void updateSnakeBody() {
-        if (snakeBody.isEmpty()) return;
-        while (routes.size() < snakeBody.size() + 1) {
-            routes.add(new Point(routes.get(routes.size() - 1).x, routes.get(routes.size() - 1).y));
-        }
-        int routesIndex = routes.size() - 1;
-
-        for (int i = snakeBody.size() - 1; i >= 0; i--) {
-            RoundedPanel segment = snakeBody.get(i);
-            Point point = routes.get(routesIndex--);
-            segment.setBounds(point.x, point.y, widthSnake, heightSnake);
+        for (int i = 1; i < snake.size(); i++) {
+            if (i < routes.size()) {
+                Point point = routes.get(i );
+                RoundedPanel segment = snake.get(i);
+                segment.setBounds(point.x, point.y, widthSnake, heightSnake);
+            }
         }
     }
+
 }
