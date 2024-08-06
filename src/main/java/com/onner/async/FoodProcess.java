@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class FoodProcess implements Runnable {
 
-    private int secondsQuantity = 3;
+    private int secondsQuantity = 5;
     private int positionInitialX;
     private int positionInitialY;
     private int randomPositionX;
@@ -44,7 +44,7 @@ public class FoodProcess implements Runnable {
                     GlobalVariables.collision = false;
                     randomFoodPosition();
                 }
-                Thread.sleep(1000);
+                Thread.sleep(250);
             }
         } catch (InterruptedException ex) {
             Logger.getLogger(FoodProcess.class.getName()).log(Level.SEVERE, null, ex);

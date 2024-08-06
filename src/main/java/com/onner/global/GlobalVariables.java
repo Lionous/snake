@@ -7,5 +7,5 @@ public class GlobalVariables {
     public static int mousePositionX = 0;
     public static int mousePositionY = 0;
 
-    public static int speedSnake = 2; //{1-5}
+    public static int speedSnake = 30; //{1-5}
 }

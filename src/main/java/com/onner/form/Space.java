@@ -52,7 +52,8 @@ public class Space extends javax.swing.JFrame {
         ).start();
         new Thread(
                 new SnakeProcess(
-                        this.space
+                        this.space,
+                        this.food
                 )
         ).start();
     }
@@ -115,7 +116,7 @@ public class Space extends javax.swing.JFrame {
         score.setBackground(new java.awt.Color(204, 204, 204));
         score.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         score.setForeground(new java.awt.Color(204, 204, 204));
-        score.setText("0");
+        score.setText("00");
 
         jlabel_losses.setBackground(new java.awt.Color(204, 204, 204));
         jlabel_losses.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
@@ -125,7 +126,7 @@ public class Space extends javax.swing.JFrame {
         losses.setBackground(new java.awt.Color(204, 204, 204));
         losses.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         losses.setForeground(new java.awt.Color(204, 204, 204));
-        losses.setText("0");
+        losses.setText("00");
 
         jlabel_level.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jlabel_level.setForeground(new java.awt.Color(204, 204, 204));
@@ -154,7 +155,7 @@ public class Space extends javax.swing.JFrame {
                 .addComponent(jlabel_score)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(score)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 209, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
                 .addComponent(jlabel_losses)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(losses)
@@ -314,9 +315,9 @@ public class Space extends javax.swing.JFrame {
     private javax.swing.JLabel jlabel_level;
     private javax.swing.JLabel jlabel_losses;
     private javax.swing.JLabel jlabel_score;
-    private javax.swing.JLabel level;
-    private javax.swing.JLabel losses;
-    private javax.swing.JLabel score;
+    public static javax.swing.JLabel level;
+    public static javax.swing.JLabel losses;
+    public static javax.swing.JLabel score;
     private javax.swing.JPanel space;
     private javax.swing.JLabel time;
     private javax.swing.JPanel windowsnake;
