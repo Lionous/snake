@@ -74,8 +74,8 @@ public class FoodProcess implements Runnable {
     }
 
     private void initialPositionOfFood() {
-        positionInitialX = (this.playSpace.getBounds().width - this.food.getBounds().width);
-        positionInitialY = (this.playSpace.getBounds().height - this.food.getBounds().width) ;
+        positionInitialX = (this.playSpace.getBounds().width/2);
+        positionInitialY = (this.playSpace.getBounds().height/2) ;
         food.setLocation(positionInitialX, positionInitialY);
     }
 }

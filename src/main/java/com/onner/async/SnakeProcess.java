@@ -16,21 +16,26 @@ public class SnakeProcess implements Runnable {
     private int widthSnake = 40;
     private int heightSnake = 40;
     int motionPixel = 40;
+    private boolean running = false;
 
     private JLabel food;
     private List<RoundedPanel> snake;
     private List<Point> routes;
 
+    private SoundProcess sound;
+
     public SnakeProcess() {}
-    public SnakeProcess(JPanel spacegame, JLabel food) {
+    public SnakeProcess(JPanel spacegame, JLabel food, SoundProcess sound) {
         this.spacegame = spacegame;
         this.food = food;
+        this.sound = sound;
         this.snake = new ArrayList<>();
         this.routes = new ArrayList<>();
         initSnake();
     }
 
     private void initSnake() {
+        GlobalVariables.startGame = true;
         RoundedPanel newSegment = new RoundedPanel();
         newSegment.setLayout(null);
         newSegment.setBackground(new Color(56, 52, 52, 255));
@@ -53,7 +58,7 @@ public class SnakeProcess implements Runnable {
         int cursorToCenterX = widthSnake / 2 - 5, cursorToCenterY = heightSnake / 2 - 5;
 
         try {
-            while (true) {
+            while (GlobalVariables.startGame) {
                 RoundedPanel head = snake.getFirst();
                 if (head != null) {
                     int newHeadX = head.getBounds().x;
@@ -72,12 +77,14 @@ public class SnakeProcess implements Runnable {
                         newHeadY -= motionPixel;
                     }
                     head.setBounds(newHeadX, newHeadY, widthSnake, heightSnake);
-
                     obtainPoints( newHeadX, newHeadY);
-
                     updateSnakeBody();
                     if (checkCollisionWithFood(food)) {
                         newRoundedPanel();
+                        sound.startSoundEat();
+                    }
+                    if (checkCollisionWithWalls(head)) {
+                        AgainstTheWall();
                     }
                 }
                 Thread.sleep(velocity);
@@ -119,7 +126,9 @@ public class SnakeProcess implements Runnable {
             if (Math.abs(x - firstPoint.x) >= widthSnake || Math.abs(y - firstPoint.y) >= heightSnake) {
                 routes.add(0, new Point(x, y));
                 if (routes.size() > snake.size()) {
-                    routes.remove(routes.size() - 1);
+                    if (!routes.isEmpty()) {
+                        routes.remove(routes.size() - 1);
+                    }
                 }
             }
         }
@@ -133,6 +142,31 @@ public class SnakeProcess implements Runnable {
                 segment.setBounds(point.x, point.y, widthSnake, heightSnake);
             }
         }
+    }
+
+    private boolean checkCollisionWithWalls(RoundedPanel head) {
+        Rectangle panelBounds = spacegame.getBounds();
+        Rectangle headBounds = head.getBounds();
+        return !panelBounds.contains(headBounds);
+    }
+
+    private void AgainstTheWall() {
+        running = false;
+        GlobalVariables.startGame = false;
+        spacegame.repaint();
+        snake.clear();
+        routes.clear();
+        for (int i = 3; i > 0; i--) {
+            System.out.println("Restarting in " + i);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        initSnake();
+        running = true;
+        new Thread(SnakeProcess.this).start();
     }
 
 }

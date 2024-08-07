@@ -6,13 +6,14 @@ package com.onner.form;
 
 import com.onner.async.FoodProcess;
 import com.onner.async.SnakeProcess;
+import com.onner.async.SoundProcess;
+import com.onner.component.SoundPlayer;
 import com.onner.global.GlobalVariables;
 
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  * @author lionos
@@ -22,6 +23,8 @@ public class Space extends javax.swing.JFrame {
     /**
      * Creates new form Space
      */
+    private SoundProcess soundProcess;
+
     public Space() {
         initComponents();
         initGeneral();
@@ -43,19 +46,15 @@ public class Space extends javax.swing.JFrame {
             }
         });
 
-        new Thread(
-                new FoodProcess(
-                        this.space,
-                        this.food,
-                        this.time
-                )
-        ).start();
-        new Thread(
-                new SnakeProcess(
-                        this.space,
-                        this.food
-                )
-        ).start();
+        SoundPlayer soundPlayer = new SoundPlayer();
+        soundProcess = new SoundProcess(soundPlayer);
+
+        new Thread( new FoodProcess( this.space, this.food, this.time)).start();
+        new Thread( new SnakeProcess( this.space, this.food, soundProcess)).start();
+        new Thread( soundProcess ).start();
+
+        //this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        this.setLocation(1000,500);
     }
     
     private void adjustSpacePanelSize() {
