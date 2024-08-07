@@ -16,7 +16,6 @@ public class SnakeProcess implements Runnable {
     private int widthSnake = 40;
     private int heightSnake = 40;
     int motionPixel = 40;
-    private boolean running = false;
 
     private JLabel food;
     private List<RoundedPanel> snake;
@@ -48,7 +47,7 @@ public class SnakeProcess implements Runnable {
     @Override
     public void run() {
         switch (GlobalVariables.sizeSnake) {
-            case "small": {motionPixel = 20; widthSnake= 20; heightSnake = 20;} break;
+            case "small": {motionPixel = 20; widthSnake= 20; heightSnake = 20;}break;
             case "medium": {motionPixel = 30; widthSnake= 30; heightSnake = 30;} break;
             case "big": {motionPixel = 40; widthSnake= 40; heightSnake = 40;} break;
             case "bright": {motionPixel = 50; widthSnake= 50; heightSnake = 50;} break;
@@ -113,7 +112,7 @@ public class SnakeProcess implements Runnable {
         newSegment.setSize(widthSnake, heightSnake);
         snake.add(newSegment);
         spacegame.add(newSegment);
-        Space.score.setText(snake.size()-1 + "");
+        Space.score.setText(" "+(snake.size()-1));
         System.out.println("Collision with food, snake size: " + snake.size());
         System.out.println("puntos : " + routes.size());
     }
@@ -150,23 +149,41 @@ public class SnakeProcess implements Runnable {
         return !panelBounds.contains(headBounds);
     }
 
+
     private void AgainstTheWall() {
-        running = false;
         GlobalVariables.startGame = false;
+        int x = spacegame.getBounds().x;
+        int y = spacegame.getBounds().y;
+        int boundsx = spacegame.getBounds().x;
+        int snakx = snake.get(0).getBounds().x;
+        int snaky = snake.get(0).getBounds().y;
+        Rectangle boundsy = spacegame.getBounds();
+        System.out.println("snake : x"+snakx + ",y:"+snaky);
+        System.out.println("spacio : x"+x + ",y:"+y);
+        System.out.println("spacio : x"+boundsx + ",y:"+boundsy);
+
+        //restartSnake();
+    }
+
+    private void restartSnake() {
+        hideSnake();
+        spacegame.revalidate();
         spacegame.repaint();
         snake.clear();
         routes.clear();
-        for (int i = 3; i > 0; i--) {
-            System.out.println("Restarting in " + i);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+        int option = JOptionPane.showConfirmDialog(null, "Chocaste contra el muro. Presione OK para reiniciar", "Game Over", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        if (option == JOptionPane.OK_OPTION) {
+            Space.score.setText(" 0");
+            Space.losses.setText(Integer.parseInt(Space.losses.getText())+1+"");
+            initSnake();
+            new Thread(SnakeProcess.this).start();
         }
-        initSnake();
-        running = true;
-        new Thread(SnakeProcess.this).start();
     }
 
+    private void hideSnake() {
+        for (RoundedPanel segment : snake) {
+            segment.setVisible(false);
+        }
+    }
 }

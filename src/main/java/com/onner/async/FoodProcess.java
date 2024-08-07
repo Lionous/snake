@@ -44,6 +44,7 @@ public class FoodProcess implements Runnable {
                     GlobalVariables.collision = false;
                     randomFoodPosition();
                 }
+                checkSnakeActivity ();
                 Thread.sleep(250);
             }
         } catch (InterruptedException ex) {
@@ -77,5 +78,9 @@ public class FoodProcess implements Runnable {
         positionInitialX = (this.playSpace.getBounds().width/2);
         positionInitialY = (this.playSpace.getBounds().height/2) ;
         food.setLocation(positionInitialX, positionInitialY);
+    }
+
+    private void checkSnakeActivity() {
+        food.setVisible(GlobalVariables.startGame);
     }
 }

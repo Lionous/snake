@@ -18,8 +18,8 @@ public class SoundPlayer {
     private static long clipTimePosition = 0;
 
     public SoundPlayer() {
-        this.soundEat = "/run/media/lionos/Lion/2024-I/Parallel-Programming/unit-ii/Project/snake/src/main/java/com/onner/resources/eat.wav";
-        this.soundLoss = "/run/media/lionos/Lion/2024-I/Parallel-Programming/unit-ii/Project/snake/src/main/java/com/onner/resources/loss.wav";
+        this.soundEat = "E:/2024-I/Parallel-Programming/unit-ii/snake/src/main/java/com/onner/resources/eat.wav";
+        this.soundLoss = "E:/2024-I/Parallel-Programming/unit-ii/snake/src/main/java/com/onner/resources/loss.wav";
     }
 
     public static void playSound(String soundFilePath) {
