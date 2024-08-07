@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class FoodProcess implements Runnable {
 
-    private int secondsQuantity = 3;
+    private int secondsQuantity = 5;
     private int positionInitialX;
     private int positionInitialY;
     private int randomPositionX;
@@ -44,7 +44,8 @@ public class FoodProcess implements Runnable {
                     GlobalVariables.collision = false;
                     randomFoodPosition();
                 }
-                Thread.sleep(1000);
+                checkSnakeActivity ();
+                Thread.sleep(250);
             }
         } catch (InterruptedException ex) {
             Logger.getLogger(FoodProcess.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,8 +75,12 @@ public class FoodProcess implements Runnable {
     }
 
     private void initialPositionOfFood() {
-        positionInitialX = (this.playSpace.getBounds().width - this.food.getBounds().width);
-        positionInitialY = (this.playSpace.getBounds().height - this.food.getBounds().width) ;
+        positionInitialX = (this.playSpace.getBounds().width/2);
+        positionInitialY = (this.playSpace.getBounds().height/2) ;
         food.setLocation(positionInitialX, positionInitialY);
+    }
+
+    private void checkSnakeActivity() {
+        food.setVisible(GlobalVariables.startGame);
     }
 }
