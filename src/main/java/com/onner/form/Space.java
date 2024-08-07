@@ -49,6 +49,7 @@ public class Space extends javax.swing.JFrame {
                 adjustSpacePanelSize();
             }
         });
+        jToggleButtonStop.setVisible(false);
     }
 
     public void startGame() {
@@ -56,6 +57,7 @@ public class Space extends javax.swing.JFrame {
 
         SoundPlayer soundPlayer = new SoundPlayer();
         soundProcess = new SoundProcess(soundPlayer);
+        soundProcess.startSoundGame();
 
         foodThread = new Thread(new FoodProcess(this.space, this.food, this.time));
         snakeThread = new Thread(new SnakeProcess(this.space, this.food, soundProcess));

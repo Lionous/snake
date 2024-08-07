@@ -12,6 +12,7 @@ import java.io.IOException;
 public class SoundPlayer {
     private String soundEat;
     private String soundLoss;
+    private String soundGame;
 
     private static Clip clip;
     private static AudioInputStream audioStream;
@@ -20,6 +21,7 @@ public class SoundPlayer {
     public SoundPlayer() {
         this.soundEat = "E:/2024-I/Parallel-Programming/unit-ii/snake/src/main/java/com/onner/resources/eat.wav";
         this.soundLoss = "E:/2024-I/Parallel-Programming/unit-ii/snake/src/main/java/com/onner/resources/loss.wav";
+        this.soundGame = "E:/2024-I/Parallel-Programming/unit-ii/snake/src/main/java/com/onner/resources/pixel-fight-8-bit.wav";
     }
 
     public static void playSound(String soundFilePath) {
@@ -44,6 +46,10 @@ public class SoundPlayer {
         } catch (UnsupportedAudioFileException | IOException | javax.sound.sampled.LineUnavailableException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getSoundGame() {
+        return soundGame;
     }
 
     public String getSoundEat() {

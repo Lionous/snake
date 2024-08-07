@@ -51,6 +51,7 @@ public class SnakeProcess implements Runnable {
             case "medium": {motionPixel = 30; widthSnake= 30; heightSnake = 30;} break;
             case "big": {motionPixel = 40; widthSnake= 40; heightSnake = 40;} break;
             case "bright": {motionPixel = 50; widthSnake= 50; heightSnake = 50;} break;
+            case "extra": {motionPixel = 80; widthSnake= 80; heightSnake = 80;} break;
         }
 
         int velocity = (int) (500 / GlobalVariables.speedSnake);
@@ -83,6 +84,7 @@ public class SnakeProcess implements Runnable {
                         sound.startSoundEat();
                     }
                     if (checkCollisionWithWalls(head)) {
+                        sound.startSoundLoss();
                         AgainstTheWall();
                     }
                 }
@@ -145,8 +147,16 @@ public class SnakeProcess implements Runnable {
 
     private boolean checkCollisionWithWalls(RoundedPanel head) {
         Rectangle panelBounds = spacegame.getBounds();
-        Rectangle headBounds = head.getBounds();
-        return !panelBounds.contains(headBounds);
+        int panelWidth = (int) panelBounds.getWidth();
+        int panelHeight = (int) panelBounds.getHeight();
+
+        if (head.getBounds().x <= 0 || head.getBounds().x >= panelWidth - 50) {
+            return true;
+        }
+        if (head.getBounds().y <= 0 || head.getBounds().y >= panelHeight - 50) {
+            return true;
+        }
+        return false;
     }
 
 
@@ -162,7 +172,7 @@ public class SnakeProcess implements Runnable {
         System.out.println("spacio : x"+x + ",y:"+y);
         System.out.println("spacio : x"+boundsx + ",y:"+boundsy);
 
-        //restartSnake();
+        restartSnake();
     }
 
     private void restartSnake() {

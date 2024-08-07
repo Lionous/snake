@@ -34,6 +34,14 @@ public class SoundProcess implements Runnable {
         }
     }
 
+    public void startSoundGame() {
+        soundToPlay = soundPlayer.getSoundGame();
+        if (!running) {
+            running = true;
+            new Thread(this).start();
+        }
+    }
+
     public void stopSoundEat() {
         running = false;
     }
