@@ -47,7 +47,7 @@ public class SnakeProcess implements Runnable {
     @Override
     public void run() {
         switch (GlobalVariables.sizeSnake) {
-            case "small": {motionPixel = 20; widthSnake= 20; heightSnake = 20;}break;
+            case "small": {motionPixel = 1; widthSnake= 20; heightSnake = 20;}break;
             case "medium": {motionPixel = 30; widthSnake= 30; heightSnake = 30;} break;
             case "big": {motionPixel = 40; widthSnake= 40; heightSnake = 40;} break;
             case "bright": {motionPixel = 50; widthSnake= 50; heightSnake = 50;} break;
@@ -110,13 +110,11 @@ public class SnakeProcess implements Runnable {
     private void newRoundedPanel() {
         RoundedPanel newSegment = new RoundedPanel();
         newSegment.setLayout(null);
-        newSegment.setBackground(Color.GRAY);
+        newSegment.setBackground(new Color(56, 52, 52, 255));
         newSegment.setSize(widthSnake, heightSnake);
         snake.add(newSegment);
         spacegame.add(newSegment);
         Space.score.setText(" "+(snake.size()-1));
-        System.out.println("Collision with food, snake size: " + snake.size());
-        System.out.println("puntos : " + routes.size());
     }
 
     private void obtainPoints(int x, int y) {
@@ -168,10 +166,6 @@ public class SnakeProcess implements Runnable {
         int snakx = snake.get(0).getBounds().x;
         int snaky = snake.get(0).getBounds().y;
         Rectangle boundsy = spacegame.getBounds();
-        System.out.println("snake : x"+snakx + ",y:"+snaky);
-        System.out.println("spacio : x"+x + ",y:"+y);
-        System.out.println("spacio : x"+boundsx + ",y:"+boundsy);
-
         restartSnake();
     }
 

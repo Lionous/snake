@@ -7,6 +7,6 @@ public class GlobalVariables {
     public static int mousePositionX = 0;
     public static int mousePositionY = 0;
 
-    public static int speedSnake = 10;
+    public static int speedSnake = 30;
     public static String sizeSnake = "medium"; //small, medium, large, bright
 }

@@ -57,7 +57,7 @@ public class Space extends javax.swing.JFrame {
 
         SoundPlayer soundPlayer = new SoundPlayer();
         soundProcess = new SoundProcess(soundPlayer);
-        soundProcess.startSoundGame();
+        //soundProcess.startSoundGame();
 
         foodThread = new Thread(new FoodProcess(this.space, this.food, this.time));
         snakeThread = new Thread(new SnakeProcess(this.space, this.food, soundProcess));
@@ -127,7 +127,7 @@ public class Space extends javax.swing.JFrame {
         score.setBackground(new java.awt.Color(204, 204, 204));
         score.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         score.setForeground(new java.awt.Color(204, 204, 204));
-        score.setText("00");
+        score.setText("000");
 
         jlabel_losses.setBackground(new java.awt.Color(204, 204, 204));
         jlabel_losses.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
@@ -137,7 +137,7 @@ public class Space extends javax.swing.JFrame {
         losses.setBackground(new java.awt.Color(204, 204, 204));
         losses.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         losses.setForeground(new java.awt.Color(204, 204, 204));
-        losses.setText("00");
+        losses.setText("000");
 
         jlabel_level.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jlabel_level.setForeground(new java.awt.Color(204, 204, 204));
